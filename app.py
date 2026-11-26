@@ -1,12 +1,51 @@
-import plotly.express as px
 import pandas as pd
+import plotly.express as px
 
-données = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSC4KusfFzvOsr8WJRgozzsCxrELW4G4PopUkiDbvrrV2lg0S19-zeryp02MC9WYSVBuzGCUtn8ucZW/pub?output=csv')
+ventes = pd.read_csv('ventes.csv')
 
-données["total"] = données["qte"] * données["prix"]
+# Vérification des données
+print(ventes.head())
+print("Nombre de lignes :", len(ventes))
+print("Colonnes :", ventes.columns.tolist())
 
-figure = px.pie(données, values='total', names='produit', title='chiffre d\'affaires vendue par produit')
+# Regroupement des quantités par produit
+ventes_par_produit = ventes.groupby('produit')['qte'].sum().reset_index()
 
-figure.write_html('chiffre-d-affaires-par-produit.html')
+# Création du graphique
+figure = px.bar(
+    ventes_par_produit,
+    x='produit',
+    y='qte',
+    title='Quantités vendues par produit',
+    labels={
+        'produit': 'Produit',
+        'qte': 'Quantité vendue'
+    }
+)
 
-print('chiffre-d-affaires-par-produit.html généré avec succès !')
+# Exportation du graphique
+figure.write_html('ventes-par-produit.html')
+
+print('Graphique des ventes par produit généré !')
+
+
+# Regroupement des quantités par produit
+ventes_par_produit = ventes.groupby('produit')['qte'].sum().reset_index()
+
+# Création du graphique
+figure = px.bar(
+    ventes_par_produit,
+    x='produit',
+    y='qte',
+    title='Quantités vendues par produit',
+    labels={
+        'produit': 'Produit',
+        'qte': 'Quantité vendue'
+    }
+)
+
+# Exportation du graphique
+figure.write_html('ventes-par-produit.html')
+
+print('Graphique des ventes par produit généré !')
+
