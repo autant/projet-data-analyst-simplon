@@ -1,16 +1,16 @@
 /*
 CREATE TABLE ventes (date TEXT, produit TEXT, prix INTEGER, qte INTEGER, region TEXT);
-
-INSERT INTO
 */
 
-//SELECT * FROM ventes
+/*
+SELECT * FROM ventes
+*/
 
 
 
-
-//SELECT COUNT(*) FROM ventes
-
+/*
+SELECT COUNT(*) FROM ventes
+*/
 
 /*
 SELECT
