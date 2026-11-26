@@ -1,18 +1,22 @@
+
 import pandas as pd
 import plotly.express as px
 
+
 ventes = pd.read_csv('ventes.csv')
 
-# Vérification des données
+
 print(ventes.head())
 print("Nombre de lignes :", len(ventes))
 print("Colonnes :", ventes.columns.tolist())
 
-# Regroupement des quantités par produit
-ventes_par_produit = ventes.groupby('produit')['qte'].sum().reset_index()
 
-# Création du graphique
-figure = px.bar(
+# GRAPHIQUE 1 : Quantités par produit
+
+
+ventes_par_produit = ventes.groupby('produit', as_index=False)['qte'].sum()
+
+figure_ventes = px.bar(
     ventes_par_produit,
     x='produit',
     y='qte',
@@ -23,29 +27,23 @@ figure = px.bar(
     }
 )
 
-# Exportation du graphique
-figure.write_html('ventes-par-produit.html')
-
-print('Graphique des ventes par produit généré !')
+figure_ventes.write_html('ventes-par-produit.html')
 
 
-# Regroupement des quantités par produit
-ventes_par_produit = ventes.groupby('produit')['qte'].sum().reset_index()
+# GRAPHIQUE 2 : Chiffre d'affaires par produit
 
-# Création du graphique
-figure = px.bar(
-    ventes_par_produit,
-    x='produit',
-    y='qte',
-    title='Quantités vendues par produit',
-    labels={
-        'produit': 'Produit',
-        'qte': 'Quantité vendue'
-    }
+
+ventes['total'] = ventes['prix'] * ventes['qte']
+
+ca_par_produit = ventes.groupby('produit', as_index=False)['total'].sum()
+
+figure_ca = px.pie(
+    ca_par_produit,
+    values='total',
+    names='produit',
+    title="Chiffre d'affaires par produit"
 )
 
-# Exportation du graphique
-figure.write_html('ventes-par-produit.html')
+figure_ca.write_html('chiffre-affaires-par-produit.html')
 
-print('Graphique des ventes par produit généré !')
-
+print("Les deux graphiques ont été générés avec succès !")
